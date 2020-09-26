@@ -1,0 +1,10 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+canvas {
+    display: block;
+    background: linear-gradient(#1c5dbe, #66c2ff, #ffcccc, #ffeee6);
+}
