@@ -6,6 +6,7 @@ let score;
 let highScore;
 let player;
 let gravity;
+let isRunning;
 let obstacles = [];
 let grounds = [];
 let gameSpeed;
@@ -187,7 +188,7 @@ class Text
     {
         ctx.beginPath();
         ctx.fillStyle = this.c;
-        ctx.font = this.s + 'px sans-serif';
+        ctx.font = this.s + 'px Allerta Stencil';
         ctx.textAlign = this.a;
         ctx.fillText(this.t, this.x, this.y);
         ctx.closePath();
@@ -237,6 +238,7 @@ function init()
 
     ctx.font = "20px sans-serif";
 
+    isRunning = true;
     gameSpeed = 12;
     gravity = GFORCE;
     score = 0;
@@ -245,21 +247,10 @@ function init()
     player = new Player(canvas.width / 3, canvas.height - 150, 50, 50, 'red ');
     
     scoreText = new Text("Score: " + score, 125, 50, "center", "#101010", "20");
-    highScoreText = new Text("Highscore: " + highScore, 600, 50, "right", 'yellow', "30");
-    replayText = new Text("Replay", canvas.width / 2, canvas.height / 3, "center", "linear-gradient(#c6ffd, #fbd786, #f7797d)", "80")
+    highScoreText = new Text("Highscore: " + highScore, 600, 50, "center", 'yellow', "30");
+    replayText = new Text("Press R to replay", canvas.width / 2, canvas.height / 3, "center", "violet", "80")
 
     requestAnimationFrame(update);
-}
-
-function end()
-{
-    grounds = [];
-    obstacles = [];
-    score = 0;
-    spawnTimer = initialSpawnTimer;
-    gameSpeed = 3;
-
-    replayText.draw();
 }
 
 let initialSpawnTimer = 60;
@@ -270,7 +261,7 @@ function update()
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     spawnTimer--;
-    if (spawnTimer <= 0)
+    if (spawnTimer <= 0 && isRunning)
     {
         spawnObs();
         spawnGround();
@@ -301,7 +292,6 @@ function update()
             player.y + player.h >= g.y
         )
         {
-            console.log('collide');
             player.isGrounded = true;
             player.y = g.y - player.h + 1;
             break;
@@ -333,19 +323,38 @@ function update()
             player.y + player.h > o.y
         )
         {
-            end();
+            grounds = [];
+            obstacles = [];
+            score = 0;
+            spawnTimer = initialSpawnTimer;
+            gameSpeed = 3;
+
+            isRunning = false;
         }
     }
 
-    player.animate();
+    if (keys['KeyR'])
+    {
+        isRunning = true;
+    }
 
-    score++;
-    scoreText.t = "Score: " + score;
-    scoreText.draw();
+    if (!isRunning)
+    {
+        replayText.draw();
+        highScoreText.draw();
+    }
+    else
+    {
+        player.animate();
 
-    highScore = Math.max(highScore, score);
-    highScoreText.t = "Highscore: " + highScore;
-    highScoreText.draw();
+        score++;
+        scoreText.t = "Score: " + score;
+        scoreText.draw();
+
+        highScore = Math.max(highScore, score);
+        highScoreText.t = "Highscore: " + highScore;
+        highScoreText.draw();
+    }
 }
 
 init();
