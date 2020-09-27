@@ -35,6 +35,7 @@ class Player
         this.jumpForce = 10;
         this.originalHeight = h;
         this.isGrounded = false;
+        this.onBlackBar = false;
     }
 
     draw() 
@@ -285,6 +286,7 @@ function update()
     {
         let g = grounds[i];
         player.isGrounded = false;
+        player.onBlackBar = false;
         if (
             player.x <= g.x + g.w &&
             player.x + player.w >= g.x &&
@@ -293,6 +295,7 @@ function update()
         )
         {
             player.isGrounded = true;
+            player.onBlackBar = true;
             player.y = g.y - player.h + 1;
             break;
         }
@@ -300,6 +303,7 @@ function update()
         if (player.y >= canvas.height - player.h)
         {
             player.isGrounded = true;
+            player.onBlackBar = false;
             player.y = canvas.height - player.h;
             break;
         }
@@ -347,7 +351,9 @@ function update()
     {
         player.animate();
 
-        score++;
+        if (player.onBlackBar) {
+            score++;
+        }
         scoreText.t = "Score: " + score;
         scoreText.draw();
 
