@@ -25,26 +25,26 @@ class Player
 {
     constructor(x, y, w, h, c)
     {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.c = c;
+        this._x = x;
+        this._y = y;
+        this._w = w;
+        this._h = h;
+        this._c = c;
 
-        this.dy = 0;
-        this.jumpForce = 10;
-        this.originalHeight = h;
-        this.isGrounded = false;
-        this.onBlackBar = false;
+        this._dy = 0;
+        this._jumpForce = 10;
+        this._originalHeight = h;
+        this._isGrounded = false;
+        this._onBlackBar = false;
     }
 
     draw() 
     {
         ctx.beginPath();
-        ctx.fillStyle = this.c;
+        ctx.fillStyle = this._c;
         ctx.lineWidth = 2;
-        ctx.strokeRect(this.x, this.y, this.w, this.h);
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.strokeRect(this._x, this._y, this._w, this._h);
+        ctx.fillRect(this._x, this._y, this._w, this._h);
         ctx.closePath();
     }
 
@@ -62,11 +62,11 @@ class Player
         }
         else if (keys['KeyS'])
         {
-            if (this.isGrounded)
+            if (this._isGrounded)
             {
-                this.h = this.originalHeight / 2;
+                this._h = this._originalHeight / 2;
                 //this.y += this.originalHeight / 2;
-                this.isGrounded = false;
+                this._isGrounded = false;
             }
             else
             {
@@ -75,22 +75,22 @@ class Player
         }
         else
         {
-            this.h = this.originalHeight;
-            this.jumpTimer = 0;
+            this._h = this._originalHeight;
+            this._jumpTimer = 0;
         }
 
         // change position
-        this.y += this.dy;
+        this._y += this._dy;
 
         // Fall
-        if (player.isGrounded == false) 
+        if (player._isGrounded == false) 
         {
-            this.dy += gravity;
+            this._dy += gravity;
         }
         else
         {
             gravity = GFORCE;
-            this.dy = 0;
+            this._dy = 0;
         }
 
         this.draw();
@@ -98,15 +98,15 @@ class Player
 
     jump(type)
     {
-        if (this.isGrounded && this.jumpTimer == 0) 
+        if (this._isGrounded && this._jumpTimer == 0) 
         {
-            this.jumpTimer = 1;
-            this.dy -= this.jumpForce * type;    
+            this._jumpTimer = 1;
+            this._dy -= this._jumpForce * type;    
         } 
-        else if (this.jumpTimer > 0 && this.jumpTimer < 15) 
+        else if (this._jumpTimer > 0 && this._jumpTimer < 15) 
         {
-            this.jumpTimer++;
-            this.dy = -this.jumpForce * type - (this.jumpTimer / 50);
+            this._jumpTimer++;
+            this._dy = -this._jumpForce * type - (this._jumpTimer / 50);
         }
     }
 }
@@ -115,28 +115,28 @@ class Ground
 {
     constructor(x, y, w, h, spd)
     {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.c = 'black';
-        this.spd = spd;
+        this._x = x;
+        this._y = y;
+        this._w = w;
+        this._h = h;
+        this._c = 'black';
+        this._spd = spd;
 
-        this.dx = 0 - gameSpeed;
+        this._dx = 0 - gameSpeed;
     }
 
     update()
     {
-        this.x += this.dx * this.spd;
+        this._x += this._dx * this._spd;
         this.draw();
-        this.dx = 0 - gameSpeed;
+        this._dx = 0 - gameSpeed;
     }
 
     draw()
     {
         ctx.beginPath();
-        ctx.fillStyle = this.c;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.fillStyle = this._c;
+        ctx.fillRect(this._x, this._y, this._w, this._h);
         ctx.closePath();
     }
 }
@@ -145,30 +145,30 @@ class Obstacle
 {
     constructor(x, y, w, h, c, spd) 
     {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.c = c;
-        this.spd = spd;
+        this._x = x;
+        this._y = y;
+        this._w = w;
+        this._h = h;
+        this._c = c;
+        this._spd = spd;
 
-        this.dx = 0 - gameSpeed;
+        this._dx = 0 - gameSpeed;
     }
 
     update()
     {
-        this.x += this.dx * this.spd;
+        this._x += this._dx * this._spd;
         this.draw();
-        this.dx = 0 - gameSpeed;
+        this._dx = 0 - gameSpeed;
     }
 
     draw()
     {
         ctx.beginPath();
         ctx.lineWidth = 2;
-        ctx.strokeRect(this.x, this.y, this.w, this.h);
-        ctx.fillStyle = this.c;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.strokeRect(this._x, this._y, this._w, this._h);
+        ctx.fillStyle = this._c;
+        ctx.fillRect(this._x, this._y, this._w, this._h);
         ctx.closePath();
     }
 }
@@ -177,21 +177,21 @@ class Text
 {
     constructor(t, x, y, a, c, s)
     {
-        this.t = t;
-        this.x = x;
-        this.y = y;
-        this.a = a;
-        this.c = c;
-        this.s = s;
+        this._t = t;
+        this._x = x;
+        this._y = y;
+        this._a = a;
+        this._c = c;
+        this._s = s;
     }
 
     draw()
     {
         ctx.beginPath();
-        ctx.fillStyle = this.c;
-        ctx.font = this.s + 'px Allerta Stencil';
-        ctx.textAlign = this.a;
-        ctx.fillText(this.t, this.x, this.y);
+        ctx.fillStyle = this._c;
+        ctx.font = this._s + 'px Allerta Stencil';
+        ctx.textAlign = this._a;
+        ctx.fillText(this._t, this._x, this._y);
         ctx.closePath();
     }
 }
@@ -209,8 +209,8 @@ function spawnObs()
 
     if (type == 1)
     {
-        obstacle.y -= player.originalHeight - randomIntInRange(10, 20);
-        obstacle.h += randomIntInRange(0, 100);
+        obstacle._y -= player._originalHeight - randomIntInRange(10, 20);
+        obstacle._h += randomIntInRange(0, 100);
     }
 
     obstacles.push(obstacle);
@@ -272,7 +272,7 @@ function update()
 
     for (let i = 0; i < grounds.length; i++) {
         let g = grounds[i];
-        if (g.x + g.width < 0) 
+        if (g._x + g._w < 0) 
         {
             grounds.splice(i, 1);
         }
@@ -285,33 +285,33 @@ function update()
     for (let i = 0; i < grounds.length; i++) 
     {
         let g = grounds[i];
-        player.isGrounded = false;
-        player.onBlackBar = false;
+        player._isGrounded = false;
+        player._onBlackBar = false;
         if (
-            player.x <= g.x + g.w &&
-            player.x + player.w >= g.x &&
-            player.y <= g.y + g.h &&
-            player.y + player.h >= g.y
+            player._x <= g._x + g._w &&
+            player._x + player._w >= g._x &&
+            player._y <= g._y + g._h &&
+            player._y + player._h >= g._y
         )
         {
-            player.isGrounded = true;
-            player.onBlackBar = true;
-            player.y = g.y - player.h + 1;
+            player._isGrounded = true;
+            player._onBlackBar = true;
+            player._y = g._y - player._h + 1;
             break;
         }
 
-        if (player.y >= canvas.height - player.h)
+        if (player._y >= canvas.height - player._h)
         {
-            player.isGrounded = true;
-            player.onBlackBar = false;
-            player.y = canvas.height - player.h;
+            player._isGrounded = true;
+            player._onBlackBar = false;
+            player._y = canvas.height - player._h;
             break;
         }
     }
 
     for (let i = 0; i < obstacles.length; i++) {
         let o = obstacles[i];
-        if (o.x + o.width < 0)
+        if (o._x + o._w < 0)
         {
             obstacles.splice(i, 1);
         }
@@ -321,10 +321,10 @@ function update()
         }
 
         if (
-            player.x < o.x + o.w &&
-            player.x + player.w > o.x &&
-            player.y < o.y + o.h &&
-            player.y + player.h > o.y
+            player._x < o._x + o._w &&
+            player._x + player._w > o._x &&
+            player._y < o._y + o._h &&
+            player._y + player._h > o._y
         )
         {
             grounds = [];
@@ -351,14 +351,14 @@ function update()
     {
         player.animate();
 
-        if (player.onBlackBar) {
+        if (player._onBlackBar) {
             score++;
         }
-        scoreText.t = "Score: " + score;
+        scoreText._t = "Score: " + score;
         scoreText.draw();
 
         highScore = Math.max(highScore, score);
-        highScoreText.t = "Highscore: " + highScore;
+        highScoreText._t = "Highscore: " + highScore;
         highScoreText.draw();
     }
 }
